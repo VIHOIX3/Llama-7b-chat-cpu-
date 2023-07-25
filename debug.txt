@@ -1,0 +1,9 @@
+downgrading requests to 2.27.1
++
+import os
+os.environ['CURL_CA_BUNDLE'] = ''
+will solve the problem
+
+requests.exceptions.ProxyError: (MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443):
+ Max retries exceeded with url: /api/models/models/llama-2-7b-chat.ggmlv3.q8_0.bin/revision/main (Caused
+ by ProxyError('Cannot connect to proxy.', FileNotFoundError(2, 'No such file or directory')))"), '(Request ID: 5a0809eb-1b1d-413e-9550-f7ea53dd366e)')
