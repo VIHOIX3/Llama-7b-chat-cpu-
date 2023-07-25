@@ -7,3 +7,29 @@ will solve the problem
 requests.exceptions.ProxyError: (MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443):
  Max retries exceeded with url: /api/models/models/llama-2-7b-chat.ggmlv3.q8_0.bin/revision/main (Caused
  by ProxyError('Cannot connect to proxy.', FileNotFoundError(2, 'No such file or directory')))"), '(Request ID: 5a0809eb-1b1d-413e-9550-f7ea53dd366e)')
+
+(MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443):
+Max retries exceeded with url: /api/models/sentence-transformers/all-MiniLM-L6-v2
+(Caused by SSLError(SSLZeroReturnError(6, 'TL
+S/SSL connection has been closed (EOF) (_ssl.c:1131)')))")
+直接下载all-MiniLM-L6-v2解决
+---------------------------------------
+prompt design is essential
+-------------------------
+
+user_requests1 = 'completing a sentence which includes COVID-19 is transmitted via droplets and air-borne'
+user_requests2 = 'recognizing named entities in the sentence ["that is to end the state of hostility , " Thursday\'s overseas edition of the People\'s Daily quoted Tang as saying. ]'
+task_list = 'text-cls,token-cls,text2text-generation,summarization,translation,question-answering,conversation,text-generation,conversation,tabular-cls'
+
+生成的结果 r1选不出，r2选出t-c:4, t-g:1
+但在更改r1为 generate  instead of completing，并减少task_list数目 时，归类为t-g
+对于user requests的任务分析需求，llama性能一般，但尚未同gpt比对
+将task list修改为更少类别的easy list时发现，其能准确识别模态任务，但是对进一步任务却不能分类,好吧后面测试也不行，可能是模型7b参数不行
+但是prompt还是很重要的
+----------------------
+Llama2:  Text: The virus that causes COVID-19 is primarily transmitted through respiratory droplets and contact with contaminated surfaces, as well as through airborne transmission via droplets that linger in the air for several hours after an infected person has coughed or sneezed.
+Category: Text The text talks about the importance of taking breaks and practicing self-care in order to avoid burnout. It suggests that people should prioritize their well-being by setting boundaries, saying no to excessive workload, and engaging in activities that bring them joy. The category is "text". Image
+Category: Image The video talks about the importance of taking breaks and practicing self-care in order to avoid burnout.
+Category: Video
+还是网上给的的prompt demo改好
+-------------------------
